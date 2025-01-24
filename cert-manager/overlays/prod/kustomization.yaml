@@ -4,3 +4,5 @@ kind: Kustomization
 resources:
 - https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml
 - ../../base
+
+namespace: cert-manager-prod
