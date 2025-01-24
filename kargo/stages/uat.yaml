@@ -1,0 +1,51 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: uat
+  namespace: kargo-cert-manager
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: cert-manager-releases
+    sources:
+      stages:
+      - test
+  promotionTemplate:
+    spec:
+      vars:
+      - name: gitopsRepo
+        value: https://github.com/mimartin12/kargo-demo.git
+      - name: certManagerRepo
+        value: https://github.com/cert-manager/cert-manager.git
+      - name: srcPath
+        value: ./src
+      - name: outPath
+        value: ./out
+      steps:
+      - uses: git-clone
+        config:
+          repoURL: ${{ vars.gitopsRepo }}
+          checkout:
+          - branch: main
+            path: ${{ vars.srcPath }}
+      - uses: yaml-update
+        as: source-update
+        config:
+          path: ${{ vars.srcPath }}/cert-manager/overlays/uat/kustomization.yaml
+          updates:
+            - key: "resources.0"
+              value: "https://github.com/cert-manager/cert-manager/releases/download/${{ commitFrom(vars.certManagerRepo, warehouse('cert-manager-releases')).Tag }}/cert-manager.yaml"
+      - uses: kustomize-build
+        config:
+          path: ${{ vars.srcPath }}/cert-manager/overlays/uat
+          outPath: ${{ vars.outPath }}/manifests.yaml
+      - uses: git-commit
+        as: commit
+        config:
+          path: ${{ vars.srcPath }}/cert-manager/overlays/uat
+          messageFromSteps:
+          - source-update
+      - uses: git-push
+        config:
+          path: ${{ vars.srcPath }}/cert-manager/overlays/uat

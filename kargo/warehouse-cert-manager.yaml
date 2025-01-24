@@ -1,0 +1,11 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: cert-manager-releases
+  namespace: kargo-cert-manager
+spec:
+  subscriptions:
+    - git:
+        repoURL: https://github.com/cert-manager/cert-manager.git
+        commitSelectionStrategy: NewestTag
+        allowTags: ^v?\d+\.\d+\.\d+$

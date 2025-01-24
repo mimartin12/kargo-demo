@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - stage: test
+      - stage: uat
+      - stage: prod
+  template:
+    metadata:
+      name: cert-manager-{{stage}}
+      annotations:
+        kargo.akuity.io/authorized-stage: kargo-cert-manager:{{stage}}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/mimartin12/kargo-demo.git
+        targetRevision: main
+        path: cert-manager/overlays/{{stage}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: cert-manager-{{stage}}
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+        automated:
+          prune: true
+          selfHeal: false
