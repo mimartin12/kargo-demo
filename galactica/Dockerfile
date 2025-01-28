@@ -1,3 +1,3 @@
-from busybox
+FROM busybox
 
-CMD ["/bin/sh", "-c", "while true; do echo 'Hello, World!'; sleep 10; done"]
+CMD ["sh", "-c", "while true; do echo 'Hello, World!'; sleep 10; done"]
