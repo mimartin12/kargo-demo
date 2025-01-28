@@ -11,6 +11,8 @@ spec:
       labels:
         app: galactica
     spec:
+      imagePullSecrets:
+        - name: spaceport
       containers:
       - name: galactica
         image: spaceport.azurecr.io/galactica:latest
