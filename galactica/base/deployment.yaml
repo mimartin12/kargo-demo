@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: galactica
+spec:
+  selector:
+    matchLabels:
+      app: galactica
+  template:
+    metadata:
+      labels:
+        app: galactica
+    spec:
+      containers:
+      - name: galactica
+        image: spaceport.azurecr.io/galactica:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+
