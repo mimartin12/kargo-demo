@@ -2,3 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ../../base
+images:
+- name: spaceport.azurecr.io/galactica
+  digest: sha256:b8a7f1800461f071354e9971698475484a08c33f7d609e105d28f1a8f29bf656
