@@ -1,0 +1,23 @@
+fullnameOverride: ingress-nginx
+controller:
+  replicaCount: 1
+  networkPolicy:
+    enabled: true
+  config:
+    large-client-header-buffers: "4 64k"
+    enable-real-ip: "true"
+    real-ip-recursive: "true"
+    ssl-redirect: "false" # Support Cloudflare Flexible SSL
+    use-forwarded-headers: "true" # Enable use of real ip headers
+    compute-full-forwarded-for: "true"
+    disable-ipv6: "true"
+    disable-ipv6-dns: "true"
+  admissionWebhooks:
+    enabled: true
+    patch:
+      networkPolicy:
+        enabled: true
+  service:
+    externalTrafficPolicy: "Local"
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
