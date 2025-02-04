@@ -4,4 +4,4 @@ resources:
 - ../../base
 images:
 - name: spaceport.azurecr.io/galactica
-  digest: sha256:cfdb01893ed9ef5c268619b9d7e93b5a568f1ece549dd07d569cd3ff7d51e634
+  digest: sha256:cc9a40e7fc33a331762c59bc894050bef5a9b6c12c01c61d643e067fbe37015b
